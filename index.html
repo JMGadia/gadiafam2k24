@@ -13,6 +13,10 @@
       align-items: center;
       height: 100vh;
       flex-direction: column;
+    }
+
+    /* Initial background color */
+    body.background-active {
       animation: backgroundBlink 3s infinite alternate;
     }
 
@@ -112,7 +116,7 @@
     <source src="santatellme.mp3" type="audio/mp3">
   </audio>
 
-  <div class="tree" onclick="startMusic()">
+  <div class="tree" onclick="startEffects()">
     <div class="star"></div>
     <div class="row">
       <span></span>
@@ -156,6 +160,7 @@
     canvas.height = window.innerHeight;
 
     const fireworks = [];
+    let fireworksActive = false;  // Flag to control fireworks activation
 
     function Firework(x, y) {
       this.x = x;
@@ -194,9 +199,11 @@
     };
 
     function createFirework() {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height / 2;
-      fireworks.push(new Firework(x, y));
+      if (fireworksActive) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height / 2;
+        fireworks.push(new Firework(x, y));
+      }
     }
 
     function animate() {
@@ -228,14 +235,20 @@
       }
     });
 
-    // Function to start the music when tree is clicked
-    function startMusic() {
+    // Function to start the music and effects when tree is clicked
+    function startEffects() {
       const audio = document.getElementById('background-music');
       if (audio.paused) {
         audio.play().catch(() => {
           console.error("Autoplay failed. User must click to start the music.");
         });
       }
+
+      // Add background animation effect
+      document.body.classList.add('background-active');
+
+      // Enable fireworks
+      fireworksActive = true;
     }
   </script>
 </body>
